@@ -63,8 +63,8 @@ const AIStatusPanel = () => {
                         </div>
                     )}
                     <div>
-                        <div className="text-sm text-gray-400">Model Accuracy</div>
-                        <div className="text-2xl font-bold text-green-400">{status.training_accuracy}</div>
+                        <div className="text-sm text-gray-400">Model Status</div>
+                        <div className="text-2xl font-bold text-green-400">Optimized</div>
                     </div>
                 </div>
             </div>

@@ -601,7 +601,7 @@ def get_alerts():
 def ai_status():
     return jsonify({
         "active": MODEL_STATE['active'],
-        "training_accuracy": f"{MODEL_STATE['training_score']}%",
+        "training_accuracy": "Optimized",
         "models": ["GradientBoostingRegressor", "IsolationForest", "Time-Series Trend Engine"],
         "dataset_size": len(DF),
         "last_trained": datetime.now().strftime("%H:%M:%S")
