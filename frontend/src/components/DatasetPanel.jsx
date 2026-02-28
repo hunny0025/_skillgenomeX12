@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UploadCloud, Play, Database, CheckCircle2, AlertTriangle, XCircle, RefreshCw, Info } from 'lucide-react';
+import axios from 'axios';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 const StatusBadge = ({ trained, source }) => {
@@ -28,9 +30,9 @@ const DatasetPanel = () => {
 
     const fetchStatus = async () => {
         try {
-            const res = await fetch('/api/model-status');
-            const data = await res.json();
-            setModelStatus(data);
+            const res = await axios.get('/api/model-status');
+            setModelStatus(res.data);
+
         } catch (e) {
             console.error('model-status error', e);
         }
@@ -45,12 +47,9 @@ const DatasetPanel = () => {
         setError(null);
         setTrainResult(null);
         try {
-            const res = await fetch('/api/train-model', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ use_uploaded: useUploaded })
-            });
-            const data = await res.json();
+            const res = await axios.post('/api/train-model', { use_uploaded: useUploaded });
+            const data = res.data;
+
             if (data.status === 'success') {
                 setTrainResult(data);
                 await fetchStatus();
@@ -73,8 +72,9 @@ const DatasetPanel = () => {
         const form = new FormData();
         form.append('file', file);
         try {
-            const res = await fetch('/api/upload-dataset', { method: 'POST', body: form });
-            const data = await res.json();
+            const res = await axios.post('/api/upload-dataset', form);
+            const data = res.data;
+
             setUploadResult(data);
         } catch (e) {
             setError('Upload failed. Please try again.');

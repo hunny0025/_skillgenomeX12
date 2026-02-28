@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Cpu, Activity, Database, ShieldCheck, TrendingUp, CheckCircle, XCircle, Zap } from 'lucide-react';
+import axios from 'axios';
+
 
 const AIStatusPanel = () => {
     const [status, setStatus] = useState(null);
@@ -10,13 +12,12 @@ const AIStatusPanel = () => {
         const fetchStatus = async () => {
             try {
                 const [aiRes, sysRes] = await Promise.all([
-                    fetch('/api/ai-status'),
-                    fetch('/api/system-status')
+                    axios.get('/api/ai-status'),
+                    axios.get('/api/system-status')
                 ]);
-                const aiData = await aiRes.json();
-                const sysData = await sysRes.json();
-                setStatus(aiData);
-                setSystemStatus(sysData);
+                setStatus(aiRes.data);
+                setSystemStatus(sysRes.data);
+
             } catch (err) {
                 console.error("AI Status Error:", err);
             } finally {

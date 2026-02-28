@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { Brain, AlertTriangle, CheckCircle2, TrendingUp, Zap, Activity, ShieldCheck, ShieldAlert, Gauge } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import axios from 'axios';
+
 
 const INDICATORS = [
     { key: 'literacy_rate', label: 'Literacy Rate', min: 40, max: 100, step: 0.1, unit: '%', default: 72 },
@@ -151,13 +153,9 @@ const SkillRiskPanel = () => {
         setError(null);
         setResult(null);
         try {
-            const res = await fetch('/api/predict-skill-risk', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(values)
-            });
-            const data = await res.json();
-            setResult(data);
+            const res = await axios.post('/api/predict-skill-risk', values);
+            setResult(res.data);
+
         } catch (e) {
             setError('Prediction failed. Ensure the backend server is running on port 5000.');
         } finally {
